@@ -1,0 +1,18 @@
+{
+  "name": "api-wutai-news",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "keywords": [],
+  "author": "Alan Ryan da Silva Domingues",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "API for SPA Wutai's News",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
