@@ -4,7 +4,7 @@ const connectDatabase = () => {
     console.log("Wait connecting to the database...");
 
     mongoose
-        .connect("mongodb+srv://alan:wPKxpdGnm3dPxqDp@cluster-wutai.5nmmu.mongodb.net/?retryWrites=true&w=majority&appName=cluster-wutai")
+        .connect( process.env.MONGODB_URI )
 
         .then(() => console.log("MongoDB Atlas Connected"))
         .catch((error) => console.log(error));
