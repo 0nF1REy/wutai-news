@@ -1,9 +1,9 @@
 import { Router } from 'express';
 const router = Router();
 
-import { create, findAll} from "../controllers/news.controller.js";
+import { create, findAll } from "../controllers/news.controller.js";
 
 router.post("/", create)
-router.get("/", getAll)
+router.get("/", findAll)
 
 export default router;

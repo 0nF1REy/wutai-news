@@ -2,7 +2,7 @@ import { createService, findAllService } from "../services/news.service.js";
 
 const create = async (req, res) => {
     try {
-        const {title, text, banner} = req.body;
+        const { title, text, banner } = req.body;
 
         if (!title || !banner || !text) {
             res.status(400).send({
@@ -14,7 +14,7 @@ const create = async (req, res) => {
             title,
             text,
             banner,
-            id: "objectidfake1",
+            user: { _id: "677c57bec694a34bd47ae619" },
         });
 
         res.send(201)
@@ -25,9 +25,14 @@ const create = async (req, res) => {
 
 };
 
-const findAll = (req, res) => {
-    const news = []
-    req.send(news)
+const findAll = async (req, res) => {
+    const news = await findAllService();
+
+    if (news.length === 0) {
+        return res.status(400).send({ message: "There are no registered news" });
+    }
+
+    res.send(news)
 };
 
-export default { create, findAll };
+export { create, findAll };
