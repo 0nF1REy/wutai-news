@@ -33,7 +33,7 @@ export const authMiddleware = (req, res, next) => {
 
 
             if (!user || !user.id) {
-                return res.status(401).send({ message: "Token invalid!" });
+                return res.status(401).send({ message: "Invalid token!" });
             }
 
             req.userId = user.id;
@@ -43,5 +43,4 @@ export const authMiddleware = (req, res, next) => {
     } catch (err) {
         res.status(500).send(err.message);
     }
-
 }
