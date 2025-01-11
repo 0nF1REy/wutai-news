@@ -98,7 +98,7 @@ export const topNews = async (req, res) => {
         const news = await topNewsService();
 
         if (!news) {
-            return res.status(400).send({ message: "There is no registered post" });
+            return res.status(400).send({ message: "There is no registered news" });
         }
 
         res.send({

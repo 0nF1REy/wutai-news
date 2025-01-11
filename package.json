@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "dev": "nodemon index"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "Alan Ryan da Silva Domingues",
@@ -17,6 +17,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "swagger-ui-express": "^5.0.1"
   }
 }

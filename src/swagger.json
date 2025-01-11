@@ -1,0 +1,746 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Wutai News API Documentation",
+    "description": "In this documentation you will be able to consult the API end-points and also test all available routes. Do not forget to register and carry out the authorization.",
+    "contact": {
+      "email": "alanryan619@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Server"
+    }
+  ],
+  "paths": {
+    "/user/": {
+      "post": {
+        "summary": "Create a new user",
+        "description": "Route responsible for creating a new user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "name": "Rally Vincent",
+                    "username": "rally_vincent_2233",
+                    "email": "rally.vincent@gmail.com",
+                    "password": "1234567",
+                    "avatar": "https://i.imgur.com/dZpnwYl.png",
+                    "background": "https://images.wallpapersden.com/image/download/road-fall-move_ZmtqZWuUmZqaraWkpJRnamtlrWZrZWU.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "Search all users",
+        "description": "Route responsible for fetching all users",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}/": {
+      "get": {
+        "summary": "Search user by id",
+        "description": "Route responsible for searching for user by id",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "User ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "patch": {
+        "summary": "Update user by id",
+        "description": "Route responsible for editing the user by id",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "User ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "Users": {
+                  "value": {
+                    "name": "Rally Vincent"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "summary": "Login to Wutai News",
+        "description": "Route responsible for logging in a registered user",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "rally.vincent@gmail.com",
+                    "password": "1234567"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/news/": {
+      "post": {
+        "summary": "Create a new news",
+        "description": "Route responsible for creating a new news",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/News"
+              },
+              "examples": {
+                "News": {
+                  "value": {
+                    "user": "",
+                    "banner": "https://c4.wallpaperflare.com/wallpaper/813/81/117/gunsmith-cats-gunsmith-rally-vincent-hd-wallpaper-preview.jpg",
+                    "title": "Em Chicago, a Noite é da Rally Vincent: A Caçadora de Recompensas Implacável",
+                    "text": "Mergulhe nas ruas sombrias de Chicago, onde o crime espreita em cada esquina e a noite guarda seus próprios segredos. Aqui, a caçadora de recompensas Rally Vincent domina o cenário, uma figura imponente com sua mira precisa e sua paixão por carros clássicos. Gunsmith Cats nos leva para um mundo noir, com sua atmosfera densa e personagens complexos. Rally, com sua postura séria e seu olhar penetrante, é uma anti-heroína que luta contra o crime com determinação e sem piedade. Sua Shelby GT500, uma máquina poderosa e veloz, é sua principal aliada nas perseguições em alta velocidade que marcam suas aventuras. Cada caso que Rally aceita a leva a confrontos com criminosos perigosos e conspirações complexas, desafiando sua habilidade e sua inteligência. Sua personalidade forte e reservada esconde um coração gentil, mas ela não hesita em usar a violência quando necessário para cumprir seus objetivos. Acompanhe Rally em suas caçadas implacáveis, onde o perigo é constante e a sobrevivência depende de suas habilidades e de sua determinação. Em um mundo onde a moralidade é ambígua, Rally Vincent se destaca como uma força da natureza, navegando pelas ruas escuras de Chicago com a mesma precisão com que dispara sua arma. Gunsmith Cats é uma jornada envolvente que explora a complexidade da natureza humana em meio a um ambiente repleto de sombras e segredos.",
+                    "likes": [],
+                    "comments": []
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/News"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "summary": "Search all news",
+        "description": "Route responsible for fetching all news",
+        "tags": [
+          "News"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/top": {
+      "get": {
+        "summary": "Search top news",
+        "description": "Route responsible for fetching top news",
+        "tags": [
+          "News"
+        ],
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/News"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/search": {
+      "get": {
+        "summary": "Search news by title",
+        "description": "Route responsible for fetching the news that match the title sent via query params",
+        "tags": [
+          "News"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "title",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/byUser": {
+      "get": {
+        "summary": "Search news by use id",
+        "description": "Route responsible for fetching news by use id",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "News ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/News"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/{id}/": {
+      "get": {
+        "summary": "Search news by use id",
+        "description": "Route responsible for fetching news by use id",
+        "tags": [
+          "News"
+        ],
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/{id}": {
+      "patch": {
+        "summary": "Update a news",
+        "description": "Route responsible for updating a news",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "News ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/News"
+              },
+              "examples": {
+                "News": {
+                  "value": {
+                    "banner": "",
+                    "title": "",
+                    "text": ""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/News"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/{id}/": {
+      "delete": {
+        "summary": "Delete a news",
+        "description": "Route responsible for deleting a news",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "News ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/news/like/{id}/": {
+      "patch": {
+        "summary": "Like a news",
+        "description": "Route responsible for liking a news",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "User ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/news/comment/{id}/": {
+      "patch": {
+        "summary": "Comment on a news",
+        "description": "Route responsible for commenting on a news",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "User ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Comment"
+              },
+              "examples": {
+                "Comment": {
+                  "value": {
+                    "message": "Apreciei sobremaneira esta auspiciosa notícia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/news/comment/{idNews}/{idComment}": {
+      "patch": {
+        "summary": "Comment on a news",
+        "description": "Route responsible for commenting on a news",
+        "tags": [
+          "News"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idNews",
+            "type": "string",
+            "description": "News ID",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "idComment",
+            "type": "string",
+            "description": "Comment ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "background": {
+            "type": "string"
+          }
+        }
+      },
+      "News": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "banner": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "likes": {
+            "type": "number"
+          },
+          "comments": {
+            "type": "array"
+          },
+          "createdAt": {
+            "type": "date"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
