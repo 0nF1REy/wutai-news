@@ -1,7 +1,9 @@
 {
   "name": "wutai-news",
   "version": "1.0.0",
+  "description": "API for SPA Wutai's News",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index",
     "dev": "nodemon index"
@@ -17,8 +19,6 @@
     "url": "https://github.com/0nF1REy/wutai-news/issues"
   },
   "homepage": "https://github.com/0nF1REy/wutai-news#readme",
-  "type": "module",
-  "description": "API for SPA Wutai's News",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
