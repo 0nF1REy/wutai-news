@@ -45,7 +45,7 @@ export const findAll = async (req, res) => {
         offset = Number(offset)
 
         if (!limit) {
-            limit = 5;
+            limit = 4;
         }
 
         if (!offset) {
