@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index"
+    "start": "node --no-warnings index.js",
+    "dev": "nodemon --no-warnings index.js"
   },
   "repository": {
     "type": "git",
