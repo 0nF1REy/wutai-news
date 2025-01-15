@@ -45,7 +45,7 @@ export const findAll = async (req, res) => {
     offset = Number(offset);
 
     if (!limit) {
-      limit = 4;
+      limit = 5;
     }
 
     if (!offset) {
@@ -154,12 +154,12 @@ export const searchByTitle = async (req, res) => {
 
     if (news.length === 0) {
       return res
-        .status(400)
-        .send({ message: "There are no news with this title" });
+        .status(200)
+        .send({ foundNews: [], message: "There are no news with this title" });
     }
 
     return res.send({
-      results: news.map((item) => ({
+      foundNews: news.map((item) => ({
         id: item._id,
         title: item.title,
         text: item.text,
