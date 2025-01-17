@@ -39,7 +39,9 @@ export const authMiddleware = async (req, res, next) => {
           .send({ message: "Invalid user associated with token" });
       }
 
-      req.userId = user._id;
+      req.user = user; // Coloque o usuário inteiro no req.user
+      req.id = decoded.id // Isso aqui é opcional, pois o user já tem o ID.
+
       return next();
     } catch (jwtError) {
       return res.status(401).send({
@@ -48,7 +50,7 @@ export const authMiddleware = async (req, res, next) => {
       });
     }
   } catch (err) {
-    res
+    return res
       .status(500)
       .send({ message: "Internal server error!", error: err.message });
   }
