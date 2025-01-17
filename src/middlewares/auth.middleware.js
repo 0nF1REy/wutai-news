@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import userService from "../services/user.service.js";
 import jwt from "jsonwebtoken";
+
 dotenv.config();
 
 export const authMiddleware = async (req, res, next) => {
@@ -24,15 +25,7 @@ export const authMiddleware = async (req, res, next) => {
     }
 
     try {
-      const decoded = await new Promise((resolve, reject) => {
-        jwt.verify(token, process.env.SECRET_JWT, (error, decoded) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(decoded);
-          }
-        });
-      });
+      const decoded = await jwt.verify(token, process.env.SECRET_JWT);
 
       if (!decoded || !decoded.id) {
         return res.status(401).send({ message: "Invalid token payload!" });
@@ -40,19 +33,19 @@ export const authMiddleware = async (req, res, next) => {
 
       const user = await userService.findByIdService(decoded.id);
 
-      if (!user || !user.id) {
-        return res.status(401).send({ message: "User not found!" });
+      if (!user || !user._id) {
+        return res
+          .status(401)
+          .send({ message: "Invalid user associated with token" });
       }
 
-      req.userId = user.id;
+      req.userId = user._id;
       return next();
     } catch (jwtError) {
-      return res
-        .status(401)
-        .send({
-          message: "Token invalid or expired!",
-          error: jwtError.message,
-        });
+      return res.status(401).send({
+        message: "Token invalid or expired!",
+        error: jwtError.message,
+      });
     }
   } catch (err) {
     res
