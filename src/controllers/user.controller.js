@@ -1,11 +1,14 @@
 import userService from "../services/user.service.js";
+import { generateToken } from "../services/auth.service.js";
 
 const create = async (req, res) => {
   try {
     const { name, username, email, password, avatar, background } = req.body;
 
     if (!name || !username || !email || !password || !avatar || !background) {
-      res.status(400).send({ message: "Submit all fields for registration" });
+      return res
+        .status(400)
+        .send({ message: "Submit all fields for registration" });
     }
 
     const user = await userService.createService(req.body);
@@ -13,6 +16,8 @@ const create = async (req, res) => {
     if (!user) {
       return res.status(400).send({ message: "Error creating User" });
     }
+
+    const token = generateToken(user._id);
 
     res.status(201).send({
       message: "User created successfully",
@@ -24,6 +29,7 @@ const create = async (req, res) => {
         avatar,
         background,
       },
+      token: token,
     });
   } catch (err) {
     res.status(500).send({ message: err.message });

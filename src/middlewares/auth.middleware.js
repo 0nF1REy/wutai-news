@@ -23,26 +23,37 @@ export const authMiddleware = async (req, res, next) => {
       return res.status(401).send({ message: "Invalid token schema!" });
     }
 
-    jwt.verify(token, process.env.SECRET_JWT, async (error, decoded) => {
-      if (error) {
-        return res.status(401).send({ message: "Token invalid or expired!" });
+    try {
+      const decoded = await new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.SECRET_JWT, (error, decoded) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(decoded);
+          }
+        });
+      });
+
+      if (!decoded || !decoded.id) {
+        return res.status(401).send({ message: "Invalid token payload!" });
       }
 
-      try {
-        const user = await userService.findByIdService(decoded.id);
+      const user = await userService.findByIdService(decoded.id);
 
-        if (!user || !user.id) {
-          return res.status(401).send({ message: "User not found!" });
-        }
-
-        req.userId = user.id;
-        return next();
-      } catch (dbError) {
-        return res
-          .status(500)
-          .send({ message: "Database error!", error: dbError.message });
+      if (!user || !user.id) {
+        return res.status(401).send({ message: "User not found!" });
       }
-    });
+
+      req.userId = user.id;
+      return next();
+    } catch (jwtError) {
+      return res
+        .status(401)
+        .send({
+          message: "Token invalid or expired!",
+          error: jwtError.message,
+        });
+    }
   } catch (err) {
     res
       .status(500)

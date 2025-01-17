@@ -23,6 +23,9 @@ const updateService = (
       password,
       avatar,
       background,
+    },
+    {
+      rawResult: true,
     }
   );
 
