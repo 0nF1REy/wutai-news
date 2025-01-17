@@ -3,42 +3,49 @@ import userService from "../services/user.service.js";
 import jwt from "jsonwebtoken";
 dotenv.config();
 
-export const authMiddleware = (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      return res.send(401);
+      return res.status(401).send({ message: "Authorization header missing!" });
     }
 
     const parts = authorization.split(" ");
 
-    const [schema, token] = parts;
-
     if (parts.length !== 2) {
-      return res.send(401);
+      return res.status(401).send({ message: "Authorization format invalid!" });
     }
 
+    const [schema, token] = parts;
+
     if (schema !== "Bearer") {
-      return res.send(401);
+      return res.status(401).send({ message: "Invalid token schema!" });
     }
 
     jwt.verify(token, process.env.SECRET_JWT, async (error, decoded) => {
       if (error) {
-        return res.status(401).send({ message: "Token invalid!" });
+        return res.status(401).send({ message: "Token invalid or expired!" });
       }
 
-      const user = await userService.findByIdService(decoded.id);
+      try {
+        const user = await userService.findByIdService(decoded.id);
 
-      if (!user || !user.id) {
-        return res.status(401).send({ message: "Invalid token!" });
+        if (!user || !user.id) {
+          return res.status(401).send({ message: "User not found!" });
+        }
+
+        req.userId = user.id;
+        return next();
+      } catch (dbError) {
+        return res
+          .status(500)
+          .send({ message: "Database error!", error: dbError.message });
       }
-
-      req.userId = user.id;
-
-      return next();
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    res
+      .status(500)
+      .send({ message: "Internal server error!", error: err.message });
   }
 };
