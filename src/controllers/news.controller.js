@@ -149,8 +149,10 @@ export const findById = async (req, res) => {
 export const searchByTitle = async (req, res) => {
   try {
     const { title } = req.query;
+    console.log("Buscando notícias com o título: ", title);
 
     const news = await searchByTitleService(title);
+    console.log("Notícias encontradas: ", news);
 
     if (news.length === 0) {
       return res
@@ -158,20 +160,26 @@ export const searchByTitle = async (req, res) => {
         .send({ foundNews: [], message: "There are no news with this title" });
     }
 
-    return res.send({
-      foundNews: news.map((item) => ({
+    const formattedNews = news.map((item) => {
+      console.log("Notícia:", item);
+      console.log("Usuário da notícia:", item.user);
+      return {
         id: item._id,
         title: item.title,
         text: item.text,
         banner: item.banner,
         likes: item.likes,
         comments: item.comments,
-        name: item.user.name,
-        username: item.user.username,
-        userAvatar: item.user.avatar,
-      })),
+        name: item.user?.name,
+        username: item.user?.username,
+        userAvatar: item.user?.avatar,
+      };
     });
+    console.log("Notícias formatadas:", formattedNews);
+
+    return res.send({ foundNews: formattedNews });
   } catch (err) {
+    console.error("Erro ao buscar notícias:", err);
     res.status(500).send({ message: err.message });
   }
 };

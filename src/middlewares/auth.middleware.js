@@ -1,8 +1,11 @@
 import dotenv from "dotenv";
 import userService from "../services/user.service.js";
 import jwt from "jsonwebtoken";
+import { promisify } from "util";
 
 dotenv.config();
+
+const jwtVerify = promisify(jwt.verify);
 
 export const authMiddleware = async (req, res, next) => {
   try {
@@ -25,7 +28,7 @@ export const authMiddleware = async (req, res, next) => {
     }
 
     try {
-      const decoded = await jwt.verify(token, process.env.SECRET_JWT);
+      const decoded = await jwtVerify(token, process.env.SECRET_JWT);
 
       if (!decoded || !decoded.id) {
         return res.status(401).send({ message: "Invalid token payload!" });
@@ -39,17 +42,19 @@ export const authMiddleware = async (req, res, next) => {
           .send({ message: "Invalid user associated with token" });
       }
 
-      req.user = user; // Coloque o usuário inteiro no req.user
-      req.id = decoded.id // Isso aqui é opcional, pois o user já tem o ID.
+      req.user = user;
+      req.userId = decoded.id;
 
-      return next();
+      next();
     } catch (jwtError) {
+      console.error("Erro ao verificar o token:", jwtError);
       return res.status(401).send({
         message: "Token invalid or expired!",
         error: jwtError.message,
       });
     }
   } catch (err) {
+    console.error("Erro no middleware", err);
     return res
       .status(500)
       .send({ message: "Internal server error!", error: err.message });
